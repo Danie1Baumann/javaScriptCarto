@@ -66,8 +66,8 @@ function calcDistanceWGS84(xx1, xx2){
   - arcos(1.000000002) == nan
   - arcos(1) == 0
   */
-  if (isNaN(velocity)){
-    velocity = 0.0;
+  if (isNaN(distance)){
+    distance = 0.0;
   }
   return parseFloat(distance);
 }
