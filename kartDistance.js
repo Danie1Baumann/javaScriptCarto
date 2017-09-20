@@ -35,19 +35,15 @@ function calcPoint(xx1, xx2, distanceTo_xx1){
 }
 
 
-
 function calcLineDistance(PointArray){
   /*
-  Expects Array with Points, that have the same number of coordinates
+  @param: Expects Array with Points, that have the same number of coordinates
   [[x, y, z, k ...], [x, y, z, k ...], [x, y, z, k ...], ...]
-  returns the length bewteen the points as float
+  @return: returns the length bewteen the points as float
   */
   totalLength = 0;
   for(let i = 0; i < PointArray.length - 1; i++){
-    console.log("Laenge: " + PointArray.length + " i: " + i);
-    console.log("Wert: " + totalLength);
     totalLength += calcDistance(PointArray[i], PointArray[i+1]);
-    console.log("x: " + i);
   }
   return parseFloat(totalLength);
 }
