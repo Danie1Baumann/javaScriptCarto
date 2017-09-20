@@ -9,30 +9,69 @@ function calcDistance(xx1, xx2){
     return;
   }
   var distance = 0;
-  for(i = 0; i < xx1.length; i++){
+  for(let i = 0; i < xx1.length; i++){
     distance += Math.pow(xx2[i] - xx1[i], 2);
   }
   return parseFloat(Math.sqrt(distance));
 }
 
 
-function calcPoint2D(xy1, xy2, distanceTo_xy1){
+function calcPoint(xx1, xx2, distanceTo_xx1){
   /*
-  finds coordinates of a point on a line in a 2D cartesian coordinate system
-  return Point as array [x, y]
+  finds coordinates of a point on a line in a cartesian coordinate system
+  return Point as array [x, y, z ...]
   */
-  var totalDistance = calcDistance(xy1, xy2);
-  var x_new = (1 - (distanceTo_xy1 / totalDistance)) * xy1[0] + ((distanceTo_xy1 / totalDistance) * xy2[0]);
-  var y_new = (1 - (distanceTo_xy1 / totalDistance)) * xy1[1] + ((distanceTo_xy1 / totalDistance) * xy2[1]);
-  /*
-  Exception if totalDistance === 0
-  */
-  if (totalDistance === 0){
-  	x_new = xy1[0];
-  	y_new = xy1[1];
+  var totalDistance = calcDistance(xx1, xx2);
+  var returnPoint = []; 
+  for(let i = 0; i < xx1.length; i++){
+    xxx = (1 - (distanceTo_xx1 / totalDistance)) * xx1[i] + ((distanceTo_xx1 / totalDistance) * xx2[i]);
+    returnPoint.push(xxx);
   }
-  return [x_new, y_new];
+  
+  if (totalDistance === 0){
+  	returnPoint = xx1;
+  }
+  return returnPoint;
 }
 
-console.log(calcPoint2D([1,1], [1,5], 2));
 
+
+function calcLineDistance(PointArray){
+  /*
+  Expects Array with Points, that have the same number of coordinates
+  [[x, y, z, k ...], [x, y, z, k ...], [x, y, z, k ...], ...]
+  returns the length bewteen the points as float
+  */
+  totalLength = 0;
+  for(let i = 0; i < PointArray.length - 1; i++){
+    console.log("Laenge: " + PointArray.length + " i: " + i);
+    console.log("Wert: " + totalLength);
+    totalLength += calcDistance(PointArray[i], PointArray[i+1]);
+    console.log("x: " + i);
+  }
+  return parseFloat(totalLength);
+}
+
+
+function calcDistanceWGS84(xx1, xx2){
+  /*
+  calculates Distance between two Points in the Wgs84 coodrinate System
+  returns distance in meters as float
+  */
+  clon = radians(parseFloat(xx1[0]));
+  clat = radians(parseFloat(xx1[1]));
+  flon = radians(parseFloat(xx2[0]));
+  flat = radians(parseFloat(xx2[1]));
+  var x = Math.sin(clat) * Math.sin(flat) + Math.cos(clat) * Math.cos(flat) * Math.cos(flon - clon);
+  var distance = 6378.388 * Math.acos(x);
+  distance = distance * 1000;
+    /*
+  Exception for float-multiplication problem, 
+  - arcos(1.000000002) == nan
+  - arcos(1) == 0
+  */
+  if (isNaN(velocity)){
+    velocity = 0.0;
+  }
+  return parseFloat(distance);
+}
